@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Learn the Major System</title>
+    <script type="text/javascript">
+       var can, ctx, step = 10, steps = 50;
+              delay = 20;
+
+        function init() {
+            layer1();
+            sleep(4000, layer2);
+        }
+
+        function sleep(millis, callback) {
+            setTimeout(function()
+                    { callback(); }
+            , millis);
+        }
+        function layer1() {
+            var c_canvas = document.getElementById("layer1");
+            var c_context = c_canvas.getContext("2d");
+
+            var image = new Image()
+            image.src = "get_image/{{id}}";
+
+            image.onload = function() {
+                c_context.drawImage(image, 0, 0);
+            };
+        }
+
+        function layer2() {
+            can = document.getElementById("layer2");
+            ctx = can.getContext("2d");
+            ctx.fillStyle = "blue";
+            ctx.font = "10pt Helvetica";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            TextSmallToBig();
+        }
+
+        function TextSmallToBig() {
+            step++;
+            ctx.clearRect(0, 0, can.width, can.height);
+            ctx.save();
+            ctx.translate(can.width / 2, can.height / 2);
+            ctx.font = step + "pt Helvetica";
+            ctx.fillText("{{id}}", 0, 0);
+            ctx.restore();
+            if (step < steps)
+                var t = setTimeout('TextSmallToBig()', 10);
+        }
+    </script>
+</head>
+<body onload="init()">
+    <h1>Hello, {{user.handle}}, </h1>
+    <br>
+    <input type=button onClick="location.href='../learn'" value='Next'>
+    <div style="position: relative;">
+        <canvas id="layer1" width="500" height="500"
+            style="position: absolute; left: 0; top: 200; z-index: 0;"></canvas>
+        <canvas id="layer2" width="100" height="100"
+            style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+</div>
+
+</body>
+</html>
